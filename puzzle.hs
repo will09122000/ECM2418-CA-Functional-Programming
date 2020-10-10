@@ -35,7 +35,7 @@ rule4 (a:b:c:d:e:f)
 
 possibles :: [Int]
 possibles
-    = [0..9999999999999999]
+    = [0..999999]
 
 main :: IO ()
 main
