@@ -1,26 +1,43 @@
-rule1 :: (Int, Int, Int, Int, Int, Int) -> Bool
-rule1 (a, b, c, d, e, f)
-    = all unique $ zip <*> tail $ [a, b, c, d, e, f]
-    where unique (x, y) = x /= y
+toList :: (Int, Int, Int, Int, Int, Int) -> [Int]
+toList (a, b, c, d, e, f)
+    = [a, b, c, d, e, f]
 
 
--- Not Done
-rule2 :: (Int, Int, Int, Int, Int, Int) -> Bool
-rule2 (a, b, c, d, e, f)
-    = all oddEven $ zip <*> tail $ [a, b, c, d, e, f]
-    where oddEven (x, y) = x /= y
+rule1 :: [Int] -> Bool
+rule1 []
+    = True
+rule1 (x:xs)
+    = x `notElem` xs && rule1 xs
 
 
-rule3 :: (Int, Int, Int, Int, Int, Int) -> Bool
-rule3 (a, b, c, d, e, f)
-    = all diff $ zip <*> tail $ [a, b, c, d, e, f]
-    where diff (x, y) = abs (x - y) > 2
+rule2 :: [Int] -> Bool
+rule2 []
+    = True
+rule2 (x:y:xs)
+    = (x + y) `mod` 2 /= 0 && rule2 xs
 
 
+rule3 :: [Int] -> Bool
+rule3 []
+    = True
+rule3 (x:y:xs)
+    = abs (x - y) > 2 && rule3 xs
+
+
+join :: [Int] -> Int
+join = read . concatMap show
+
+rule4 :: [Int] -> Bool
+rule4 (a:b:c:d:e:f)
+    | join [a,b] `mod` join [e,join f] == 0 && join [c,d] `mod` join [e,join f] == 0 = True
+    | otherwise = False
+
+
+possibles :: [Int]
 possibles
-    = map (+ 1) [0]
+    = [0..9999999999999999]
 
 main :: IO ()
 main
-    -- = putStrLn(show(rule3 (4,9,6,3,0,7)))
+    -- = putStrLn(show(rule4(toList (4,9,6,3,0,7))))
     = putStrLn(show(possibles))
