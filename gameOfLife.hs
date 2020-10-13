@@ -24,14 +24,24 @@ createRow :: Int -> Int -> [Point] -> String
 createRow (-1) y p
     = []
 createRow x y p
-    | isCell x y p = "#" ++ createRow (x-1) y p
-    | otherwise = "." ++ createRow (x-1) y p
+    | isCell x y p = createRow (x-1) y p ++ "#"
+    | otherwise = createRow (x-1) y p ++ "."
 
 visualisation :: Int -> Int -> [Point] -> [String]
 visualisation x (-1) p
     = []
 visualisation x y p
-    = reverse(createRow x y p) : visualisation x (y-1) p
+    = visualisation x (y-1) p ++ [createRow x y p]
+
+rule1 :: [Point] -> [Point]
+rule1 []
+    = []
+rule1 (p:ps)
+    = idk
+
+-- evolution :: [Point] -> [[Point]]
+-- evolution p
+    -- = p : evolution 
 
 main :: IO ()
 main
@@ -39,6 +49,7 @@ main
     -- = putStrLn (pretty  [ [ [ 'a','b' ], [ 'c','d' ] ]
                         -- , [ [ 'e','f' ], [ 'g','h' ] ]
                         -- , [ [ 'i','j' ], [ 'k','l' ] ] ])
-    = putStrLn(pretty(reverse(visualisation 5 5 glider)))
+    = putStrLn(pretty(visualisation 5 5 glider))
     -- = putStrLn(createRow 5 5 glider)
     -- = putStrLn(show(isCell 0 0 glider))
+    -- = rule1 [(0, 2), (1, 3), (2, 1), (2, 2), (2, 3)]
