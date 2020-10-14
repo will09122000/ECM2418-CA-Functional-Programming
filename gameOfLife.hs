@@ -51,21 +51,21 @@ numNeighbours (x:xs) p
     | abs(fst x - fst p) <= 1 && abs(snd x - snd p) <= 1 = 1 + numNeighbours xs p
     | otherwise = numNeighbours xs p
 
-rule1 :: [Point] -> [Point]
+rule1 :: [Point] -> Bool
 rule1 []
-    = []
+    = False
 rule1 (x:xs)
-    | numNeighbours xs x == 2 || numNeighbours xs x == 3 = [x] ++ rule1 (x:xs)
-    | otherwise = rule1 (x:xs)
+    | numNeighbours xs x == 2 || numNeighbours xs x == 3 = True
+    | otherwise = False
 
 evolution :: [Point] -> [[Point]]
 evolution p
-    = concat [rule1 p] : evolution p
+    = concat [filter rule1 [p]] ++ evolution p
 
 main :: IO ()
 main
-    -- = putStrLn (pretty (take 3 (visualisation 5 5 (evolution glider))))
-    = putStrLn(show(rule1 glider))
+    = putStrLn (pretty (take 3 (visualisation 5 5 (evolution glider))))
+    -- = putStrLn(show(rule1 glider))
     -- = putStrLn (pretty  [ [ [ 'a','b' ], [ 'c','d' ] ]
                         -- , [ [ 'e','f' ], [ 'g','h' ] ]
                         -- , [ [ 'i','j' ], [ 'k','l' ] ] ])
