@@ -1,3 +1,5 @@
+import Data.List
+
 type Sequence
     = (Int, Int, Int, Int, Int, Int)
 
@@ -17,10 +19,10 @@ toTuple :: [Int] -> Sequence
 toTuple [a, b, c, d, e, f]
     = (a, b, c, d, e, f)
 
+
 rule1 :: Sequence -> Bool
 rule1 (a, b, c, d, e, f)
-    = all unique $ zip <*> tail $ [a, b, c, d, e, f]
-    where unique (x, y) = x /= y
+    = length(nub [a, b, c, d, e, f]) == length [a, b, c, d, e, f]
 
 rule2 :: Sequence -> Bool
 rule2 (a, b, c, d, e, f)
