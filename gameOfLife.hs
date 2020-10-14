@@ -64,7 +64,8 @@ evolution p
 
 main :: IO ()
 main
-    = putStrLn (pretty (take 3 (visualisation 5 5 (evolution glider))))
+    -- = putStrLn (pretty (take 3 (visualisation 5 5 (evolution glider))))
+    = putStrLn(show(filter (\x -> rule1 x) [glider]))
     -- = putStrLn(show(rule1 glider))
     -- = putStrLn (pretty  [ [ [ 'a','b' ], [ 'c','d' ] ]
                         -- , [ [ 'e','f' ], [ 'g','h' ] ]
