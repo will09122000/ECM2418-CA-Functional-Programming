@@ -3,18 +3,16 @@ import Data.List
 type Point
     = ( Int, Int )
 
-pretty :: [[String]] -> String
-pretty []
-    = []
-pretty (x:xs)
-    = unlines x ++ pretty xs
-    -- Thought line below may be more suitable to create a gap between each evolution but wasn't sure if it followed the spec exactly.
-    -- = unlines x ++ "\n" ++ pretty xs
-
 glider :: [Point]
 glider
     = [  (0, 2), (1, 3), (2, 1), (2, 2), (2, 3) ]
 
+pairToList :: Point -> [Int]
+pairToList (x,y) = [x,y]
+
+maxLists :: [Point] -> Int
+maxLists p
+    = maximum(concat(map pairToList p))
 
 isCell :: Int -> Int -> [Point] -> Bool
 isCell _ _ []
@@ -37,14 +35,6 @@ createGrid _ (-1) _
     = []
 createGrid x y p
     = createGrid x (y-1) p ++ [createRow x y p]
-
-visualisation :: Int -> Int -> [[Point]] -> [[String]]
-visualisation _ _ []
-    = []
-visualisation _ (-1) _
-    = []
-visualisation x y (p:ps)
-    = [createGrid x y p] ++ visualisation x y ps
 
 numNeighbours ::  Point -> [Point] -> Int
 numNeighbours _ []
@@ -73,22 +63,27 @@ rule2 _ (-1) _
 rule2 x y p
     = rule2 x (y-1) p ++ checkRow x y p
 
+pretty :: [[String]] -> String
+pretty []
+    = []
+pretty (x:xs)
+    = unlines x ++ pretty xs
+    -- Thought line below may be more suitable to create a gap between each evolution but wasn't sure if it followed the spec exactly.
+    -- = unlines x ++ "\n" ++ pretty xs
+
+visualisation :: Int -> Int -> [[Point]] -> [[String]]
+visualisation _ _ []
+    = []
+visualisation _ (-1) _
+    = []
+visualisation x y (p:ps)
+    = [createGrid x y p] ++ visualisation x y ps
+
 evolution :: [Point] -> [[Point]]
 evolution p
     = [p] ++ evolution nextP
-    where nextP = nub (concat[rule1 p p, rule2 (length p) (length p) p])
+    where nextP = nub (concat[rule1 p p, rule2 (maxLists glider + 1) (maxLists glider + 1) p])
 
 main :: IO ()
 main
-    = putStrLn (pretty (take 8 (visualisation 5 5 (evolution glider))))
-    -- = putStrLn ( show( nub (concat[rule1 glider glider, rule2 (length glider) (length glider) glider])))
-    -- = putStrLn(show(glider))
-    -- = putStrLn(show(rule2 (length glider) (length glider) glider))
-    -- = putStrLn(show(rule1 glider))
-    -- = putStrLn (pretty  [ [ [ 'a','b' ], [ 'c','d' ] ]
-                        -- , [ [ 'e','f' ], [ 'g','h' ] ]
-                        -- , [ [ 'i','j' ], [ 'k','l' ] ] ])
-    -- = putStrLn(show(visualisation 5 5 glider))
-    -- = putStrLn(createRow 5 5 glider)
-    -- = putStrLn(show(isCell 0 0 glider))
-    -- = rule1 [(0, 2), (1, 3), (2, 1), (2, 2), (2, 3)]
+    = putStrLn (pretty (take 15 (visualisation 5 5 (evolution glider))))
