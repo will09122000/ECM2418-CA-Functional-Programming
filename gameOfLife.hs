@@ -44,28 +44,28 @@ visualisation x (-1) p
 visualisation x y (p:ps)
     = [createGrid x y p] ++ visualisation x y ps
 
-numNeighbours ::  [Point] -> Point -> Int
-numNeighbours [] p
+numNeighbours ::  Point -> [Point] -> Int
+numNeighbours p []
     = 0
-numNeighbours (x:xs) p
-    | abs(fst x - fst p) <= 1 && abs(snd x - snd p) <= 1 = 1 + numNeighbours xs p
-    | otherwise = numNeighbours xs p
+numNeighbours p (x:xs)
+    | abs(fst x - fst p) <= 1 && abs(snd x - snd p) <= 1 = 1 + numNeighbours p xs
+    | otherwise = numNeighbours p xs
 
-rule1 :: [Point] -> Bool
+rule1 :: [Point] -> [Point]
 rule1 []
-    = False
+    = []
 rule1 (x:xs)
-    | numNeighbours xs x == 2 || numNeighbours xs x == 3 = True
-    | otherwise = False
+    | numNeighbours x xs == 2 || numNeighbours x xs == 3 = [x] ++ rule1 (x:xs)
+    | otherwise = rule1 (x:xs)
 
 evolution :: [Point] -> [[Point]]
 evolution p
-    = concat [filter rule1 [p]] ++ evolution p
+    = evolution p
 
 main :: IO ()
 main
     -- = putStrLn (pretty (take 3 (visualisation 5 5 (evolution glider))))
-    = putStrLn(show(filter (\x -> rule1 x) [glider]))
+    = putStrLn(show(rule1 glider))
     -- = putStrLn(show(rule1 glider))
     -- = putStrLn (pretty  [ [ [ 'a','b' ], [ 'c','d' ] ]
                         -- , [ [ 'e','f' ], [ 'g','h' ] ]
