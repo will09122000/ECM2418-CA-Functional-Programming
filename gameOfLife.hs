@@ -1,3 +1,5 @@
+import Data.List.nub
+
 type Point
     = ( Int, Int )
 
@@ -51,21 +53,35 @@ numNeighbours p (x:xs)
     | abs(fst x - fst p) <= 1 && abs(snd x - snd p) <= 1 = 1 + numNeighbours p xs
     | otherwise = numNeighbours p xs
 
-rule1 :: [Point] -> [Point]
-rule1 []
+rule1 :: [Point] -> [Point] -> [Point]
+rule1 [] _
     = []
-rule1 (x:xs)
-    | numNeighbours x xs == 2 || numNeighbours x xs == 3 = [x] ++ rule1 (x:xs)
-    | otherwise = rule1 (x:xs)
+rule1 (x:xs) p
+    | numNeighbours x p == 3 || numNeighbours x p == 4 = [x] ++ rule1 (xs) p
+    | otherwise = rule1 (xs) p
+
+checkRow :: Int -> Int -> [Point] -> [Point]
+checkRow (-1) y p
+    = []
+checkRow x y p
+    | numNeighbours (x,y) p == 3 = checkRow (x-1) y p ++ [(x,y)]
+    | otherwise = checkRow (x-1) y p
+
+rule2 :: Int -> Int -> [Point] -> [Point]
+rule2 x (-1) p
+    = []
+rule2 x y p
+    = rule2 x (y-1) p ++ checkRow x y p
 
 evolution :: [Point] -> [[Point]]
 evolution p
-    = evolution p
+    = nub [concat[[rule1 p p], [rule2 (length p) (length p) p]]] ++ evolution p
 
 main :: IO ()
 main
     -- = putStrLn (pretty (take 3 (visualisation 5 5 (evolution glider))))
-    = putStrLn(show(rule1 glider))
+    = putStrLn(show(rule2 (length glider) (length glider) glider))
+    -- = putStrLn(show(evolution glider))
     -- = putStrLn(show(rule1 glider))
     -- = putStrLn (pretty  [ [ [ 'a','b' ], [ 'c','d' ] ]
                         -- , [ [ 'e','f' ], [ 'g','h' ] ]
