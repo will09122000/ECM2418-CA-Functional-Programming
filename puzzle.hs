@@ -1,15 +1,18 @@
 import Data.List
 
 type Sequence
-    = (Int, Int, Int, Int, Int, Int)
+    = ( Int, Int, Int, Int, Int, Int )
 
+-- Converts a list of integers to one concatenated integer. 
 join :: [Int] -> Int
 join = read . concatMap show
 
+-- Converts an integer to a list of indivdiual integers. 
 split :: Int -> [Int]
 split
     = map (read . (:[])) . show
 
+-- Prefixes zero's to the list of possibles so they are six digits in length.
 padding :: [Int] -> [Int]
 padding (xs)
     | length xs > 5 = xs
@@ -54,4 +57,6 @@ isSolution (a, b, c, d, e, f)
 
 main :: IO ()
 main
-    = putStrLn(show(isSolution (4,9,6,3,0,7)))
+    -- = putStrLn(show(isSolution (4,9,6,3,0,7)))
+    = putStrLn(show(possibles))
+
