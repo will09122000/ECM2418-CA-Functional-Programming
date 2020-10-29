@@ -81,7 +81,6 @@ pretty []
     = []
 pretty (x:xs)
     = unlines x ++ pretty xs
-    
     -- Thought line below may be more suitable to create a gap between each evolution but wasn't sure if it followed the spec exactly.
     -- = unlines x ++ "\n" ++ pretty xs
 
