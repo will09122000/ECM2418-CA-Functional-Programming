@@ -64,4 +64,4 @@ isSolution (a, b, c, d, e, f)
 
 main :: IO ()
 main
-    = putStrLn(show(isSolution (4,9,6,3,0,7)))
+    = putStrLn (show (isSolution (4,9,6,3,0,7)))

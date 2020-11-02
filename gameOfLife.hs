@@ -100,4 +100,4 @@ evolution p
 
 main :: IO ()
 main
-    = putStrLn (pretty (take 15 (visualisation 5 5 (evolution glider))))
+    = putStrLn (pretty (take 8 (visualisation 5 5 (evolution glider))))
