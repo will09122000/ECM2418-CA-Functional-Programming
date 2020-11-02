@@ -34,7 +34,7 @@ rule2 :: Sequence -> Bool
 rule2 (a, b, c, d, e, f)
     = all oddEven $ zip <*> tail $ [ a, b, c, d, e, f ]
   where
-      oddEven (x, y) = (x + y) `mod` 2 /= 0
+      oddEven (x, y) = odd (x + y)
 
 -- Checks each overlapping pair ((a,b), (b,c) ...) differ by no more than two.
 rule3 :: Sequence -> Bool
